@@ -195,8 +195,14 @@ OUTER:
 					ns = append(append(ns, cf.altName...), '.')
 					structNs = append(append(structNs, cf.name...), '.')
 				}
-
 				v.validateStruct(ctx, parent, current, typ, ns, structNs, ct)
+			}
+			/* no tags but maybe we still have smth to traverse? */
+			switch kind {
+			case reflect.Slice, reflect.Array:
+				v.traverseSlice(ctx, parent, current, ns, structNs, cf)
+			case reflect.Map:
+				v.traverseMap(ctx, parent, current, ns, structNs, cf)
 			}
 			return
 		}
@@ -507,5 +513,51 @@ func getValue(val reflect.Value) interface{} {
 		return val.Float()
 	default:
 		return val.String()
+	}
+}
+
+func (v *validate) traverseSlice(ctx context.Context, parent reflect.Value, current reflect.Value, ns []byte, structNs []byte, cf *cField) {
+	var i64 int64
+	reusableCF := &cField{}
+	for i := 0; i < current.Len(); i++ {
+		i64 = int64(i)
+		v.misc = append(v.misc[0:0], cf.name...)
+		v.misc = append(v.misc, '[')
+		v.misc = strconv.AppendInt(v.misc, i64, 10)
+		v.misc = append(v.misc, ']')
+		reusableCF.name = string(v.misc)
+		if cf.namesEqual {
+			reusableCF.altName = reusableCF.name
+		} else {
+			v.misc = append(v.misc[0:0], cf.altName...)
+			v.misc = append(v.misc, '[')
+			v.misc = strconv.AppendInt(v.misc, i64, 10)
+			v.misc = append(v.misc, ']')
+			reusableCF.altName = string(v.misc)
+		}
+		v.traverseField(ctx, parent, current.Index(i), ns, structNs, reusableCF, nil)
+	}
+}
+
+func (v *validate) traverseMap(ctx context.Context, parent reflect.Value, current reflect.Value, ns []byte, structNs []byte, cf *cField) {
+	var pv string
+	reusableCF := &cField{}
+	for _, key := range current.MapKeys() {
+		pv = fmt.Sprintf("%v", key.Interface())
+		v.misc = append(v.misc[0:0], cf.name...)
+		v.misc = append(v.misc, '[')
+		v.misc = append(v.misc, pv...)
+		v.misc = append(v.misc, ']')
+		reusableCF.name = string(v.misc)
+		if cf.namesEqual {
+			reusableCF.altName = reusableCF.name
+		} else {
+			v.misc = append(v.misc[0:0], cf.altName...)
+			v.misc = append(v.misc, '[')
+			v.misc = append(v.misc, pv...)
+			v.misc = append(v.misc, ']')
+			reusableCF.altName = string(v.misc)
+		}
+		v.traverseField(ctx, parent, current.MapIndex(key), ns, structNs, reusableCF, nil)
 	}
 }

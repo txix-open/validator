@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/validator/v10"
+	"github.com/integration-system/validator/v10"
 )
 
 type defaultValidator struct {

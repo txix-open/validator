@@ -7,7 +7,7 @@ import (
 	. "github.com/go-playground/assert/v2"
 	ja_locale "github.com/go-playground/locales/ja"
 	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
+	"github.com/integration-system/validator/v10"
 )
 
 func TestTranslations(t *testing.T) {
