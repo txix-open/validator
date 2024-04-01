@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/integration-system/validator/v10"
+	"github.com/txix-open/validator/v10"
 )
 
 // Test ...

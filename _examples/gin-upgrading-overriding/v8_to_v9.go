@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin/binding"
-	"github.com/integration-system/validator/v10"
+	"github.com/txix-open/validator/v10"
 )
 
 type defaultValidator struct {

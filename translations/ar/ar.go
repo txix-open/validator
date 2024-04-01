@@ -9,7 +9,7 @@ import (
 	"time"
 
 	ut "github.com/go-playground/universal-translator"
-	"github.com/integration-system/validator/v10"
+	"github.com/txix-open/validator/v10"
 )
 
 // RegisterDefaultTranslations registers a set of default translations

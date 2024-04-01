@@ -1,4 +1,4 @@
-module github.com/integration-system/validator/v10
+module github.com/txix-open/validator/v10
 
 go 1.20
 

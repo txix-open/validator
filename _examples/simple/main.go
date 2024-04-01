@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/integration-system/validator/v10"
+	"github.com/txix-open/validator/v10"
 )
 
 // User contains user information
