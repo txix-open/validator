@@ -10,10 +10,10 @@ import (
 	"github.com/go-playground/locales/zh"
 	"github.com/go-playground/locales/zh_Hant_TW"
 	ut "github.com/go-playground/universal-translator"
-	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
 	zh_tw_translations "github.com/go-playground/validator/v10/translations/zh_tw"
+	"github.com/txix-open/validator/v10"
 )
 
 var uni *ut.UniversalTranslator

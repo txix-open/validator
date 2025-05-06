@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/txix-open/validator/v10"
 )
 
 //go:generate enumer -type=Enum
