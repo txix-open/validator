@@ -1032,6 +1032,26 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 		},
 		{
+			tag:         "alphaspace",
+			translation: "{0}은(는) 알파벳과 공백만 포함할 수 있습니다.",
+			override:    false,
+		},
+		{
+			tag:         "alphanumspace",
+			translation: "{0}은(는) 알파벳, 숫자, 공백만 포함할 수 있습니다.",
+			override:    false,
+		},
+		{
+			tag:         "alphaunicode",
+			translation: "{0}은(는) 유니코드 문자만 포함할 수 있습니다.",
+			override:    false,
+		},
+		{
+			tag:         "alphanumunicode",
+			translation: "{0}은(는) 유니코드 문자와 숫자만 포함할 수 있습니다.",
+			override:    false,
+		},
+		{
 			tag:         "numeric",
 			translation: "{0}은(는) 올바른 숫자여야 합니다.",
 			override:    false,
@@ -1434,6 +1454,11 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 		{
 			tag:         "image",
 			translation: "{0}은(는) 유효한 이미지여야 합니다.",
+			override:    false,
+		},
+		{
+			tag:         "mimetype",
+			translation: "{0}은(는) 유효한 MIME 타입이어야 합니다.",
 			override:    false,
 		},
 		{

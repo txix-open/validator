@@ -79,7 +79,7 @@ type FieldError interface {
 	// validation was an alias, this will return the
 	// alias name and not the underlying tag that failed.
 	//
-	// eg. alias "iscolor": "hexcolor|rgb|rgba|hsl|hsla"
+	// eg. alias "iscolor": "hexcolor|rgb|rgba|hsl|hsla|cmyk"
 	// will return "iscolor"
 	Tag() string
 
@@ -87,8 +87,8 @@ type FieldError interface {
 	// alias the actual tag within the alias will be returned.
 	// If an 'or' validation fails the entire or will be returned.
 	//
-	// eg. alias "iscolor": "hexcolor|rgb|rgba|hsl|hsla"
-	// will return "hexcolor|rgb|rgba|hsl|hsla"
+	// eg. alias "iscolor": "hexcolor|rgb|rgba|hsl|hsla|cmyk"
+	// will return "hexcolor|rgb|rgba|hsl|hsla|cmyk"
 	ActualTag() string
 
 	// Namespace returns the namespace for the field error, with the tag
@@ -105,24 +105,24 @@ type FieldError interface {
 	// StructNamespace returns the namespace for the field error, with the field's
 	// actual name.
 	//
-	// eq. "User.FirstName" see Namespace for comparison
+	// eg. "User.FirstName" see Namespace for comparison
 	//
 	// NOTE: this field can be blank when validating a single primitive field
 	// using validate.Field(...) as there is no way to extract its name
 	StructNamespace() string
 
-	// Field returns the fields name with the tag name taking precedence over the
+	// Field returns the field's name with the tag name taking precedence over the
 	// field's actual name.
 	//
 	// `RegisterTagNameFunc` must be registered to get tag value.
 	//
-	// eq. JSON name "fname"
+	// eg. JSON name "fname"
 	// see StructField for comparison
 	Field() string
 
 	// StructField returns the field's actual name from the struct, when able to determine.
 	//
-	// eq.  "FirstName"
+	// eg.  "FirstName"
 	// see Field for comparison
 	StructField() string
 

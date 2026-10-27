@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+// Valuer is an interface that allows you to expose a method on a type
+// (including generic types) that returns a value that is supposed to be validated.
+type Valuer interface {
+	// ValidatorValue returns the value that is supposed to be validated.
+	ValidatorValue() any
+}
+
 // extractTypeInternal gets the actual underlying type of field value.
 // It will dive into pointers, customTypes and return you the
 // underlying value and it's kind.
@@ -23,6 +30,13 @@ BEGIN:
 			return current, reflect.Ptr, nullable
 		}
 
+		if current.CanInterface() {
+			if v, ok := current.Interface().(Valuer); ok {
+				current = reflect.ValueOf(v.ValidatorValue())
+				goto BEGIN
+			}
+		}
+
 		current = current.Elem()
 		goto BEGIN
 
@@ -34,6 +48,13 @@ BEGIN:
 			return current, reflect.Interface, nullable
 		}
 
+		if current.CanInterface() {
+			if v, ok := current.Interface().(Valuer); ok {
+				current = reflect.ValueOf(v.ValidatorValue())
+				goto BEGIN
+			}
+		}
+
 		current = current.Elem()
 		goto BEGIN
 
@@ -41,6 +62,13 @@ BEGIN:
 		return current, reflect.Invalid, nullable
 
 	default:
+
+		if current.CanInterface() {
+			if v, ok := current.Interface().(Valuer); ok {
+				current = reflect.ValueOf(v.ValidatorValue())
+				goto BEGIN
+			}
+		}
 
 		if v.v.hasCustomFuncs {
 			if fn, ok := v.v.customFuncs[current.Type()]; ok {
@@ -214,10 +242,12 @@ BEGIN:
 	}
 
 	// if got here there was more namespace, cannot go any deeper
-	panic("Invalid field namespace")
+	// return found=false instead of panicking to handle cases like ValidateMap
+	// where cross-field validators (required_if, etc.) can't navigate non-struct parents
+	return
 }
 
-// asInt returns the parameter as a int64
+// asInt returns the parameter as an int64
 // or panics if it can't convert
 func asInt(param string) int64 {
 	i, err := strconv.ParseInt(param, 0, 64)
@@ -296,7 +326,7 @@ func fieldMatchesRegexByStringerValOrString(regexFn func() *regexp.Regexp, fl Fi
 	case reflect.String:
 		return regex.MatchString(fl.Field().String())
 	default:
-		if stringer, ok := fl.Field().Interface().(fmt.Stringer); ok {
+		if stringer, ok := getValue(fl.Field()).(fmt.Stringer); ok {
 			return regex.MatchString(stringer.String())
 		} else {
 			return regex.MatchString(fl.Field().String())

@@ -259,6 +259,16 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 			override:    false,
 		},
 		{
+			tag:         "alphaspace",
+			translation: "{0} hanya dapat berisi karakter alfabet dan spasi",
+			override:    false,
+		},
+		{
+			tag:         "alphanumspace",
+			translation: "{0} hanya dapat berisi karakter alfanumerik dan spasi",
+			override:    false,
+		},
+		{
 			tag:         "alphanumunicode",
 			translation: "{0} hanya boleh berisi karakter alfanumerik unicode",
 			override:    false,
@@ -1175,6 +1185,11 @@ func RegisterDefaultTranslations(v *validator.Validate, trans ut.Translator) (er
 		{
 			tag:         "image",
 			translation: "{0} harus berupa gambar yang valid",
+			override:    false,
+		},
+		{
+			tag:         "mimetype",
+			translation: "{0} harus berupa tipe MIME yang valid",
 			override:    false,
 		},
 		{
